@@ -456,6 +456,75 @@ const handleDrop = (e) => {
   if (e.dataTransfer.getData("text/plain") === "heart") doPlant();
 };
 
+var touchGhost = null;
+var touchDragActive = false;
+var lastTouchX = 0;
+var lastTouchY = 0;
+
+const handleHeartTouchStart = (e) => {
+  if (e.touches.length !== 1) return;
+  touchDragActive = false;
+  lastTouchX = e.touches[0].clientX;
+  lastTouchY = e.touches[0].clientY;
+};
+
+const handleHeartTouchMove = (e) => {
+  if (e.touches.length !== 1) return;
+  e.preventDefault();
+  touchDragActive = true;
+  var x = e.touches[0].clientX;
+  var y = e.touches[0].clientY;
+  lastTouchX = x;
+  lastTouchY = y;
+  var heartSeed = document.getElementById("heartSeed");
+  var plantZone = document.getElementById("plantZone");
+  if (heartSeed && !touchGhost) {
+    touchGhost = document.createElement("div");
+    touchGhost.className = "heart-touch-ghost";
+    touchGhost.setAttribute("aria-hidden", "true");
+    var img = heartSeed.querySelector("img");
+    if (img) {
+      var clone = img.cloneNode(true);
+      touchGhost.appendChild(clone);
+    }
+    touchGhost.style.left = x + "px";
+    touchGhost.style.top = y + "px";
+    document.body.appendChild(touchGhost);
+  }
+  if (touchGhost) {
+    touchGhost.style.left = x + "px";
+    touchGhost.style.top = y + "px";
+  }
+  if (plantZone) {
+    var rect = plantZone.getBoundingClientRect();
+    var over = x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+    plantZone.classList.toggle("drag-over", over);
+  }
+};
+
+const handleHeartTouchEnd = (e) => {
+  if (e.changedTouches.length !== 1) return;
+  var x = lastTouchX;
+  var y = lastTouchY;
+  if (touchGhost) {
+    touchGhost.remove();
+    touchGhost = null;
+  }
+  var plantZone = document.getElementById("plantZone");
+  if (plantZone) plantZone.classList.remove("drag-over");
+  if (touchDragActive) {
+    var el = document.elementFromPoint(x, y);
+    if (plantZone && (el === plantZone || plantZone.contains(el))) {
+      heartSelected = true;
+      var heartSeed = document.getElementById("heartSeed");
+      if (heartSeed) heartSeed.classList.add("selected");
+      if (plantZone) plantZone.classList.add("ready");
+      doPlant();
+    }
+  }
+  touchDragActive = false;
+};
+
 const handleSpeakerClick = () => {
   const bgMusic = document.getElementById("bgMusic");
   const lanaMusic = document.getElementById("lanaMusic");
@@ -485,6 +554,9 @@ function initGameFlow() {
     heartSeed.addEventListener("keydown", handleHeartKeyDown);
     heartSeed.addEventListener("dragstart", handleDragStart);
     heartSeed.addEventListener("dragend", handleDragEnd);
+    heartSeed.addEventListener("touchstart", handleHeartTouchStart, { passive: true });
+    heartSeed.addEventListener("touchmove", handleHeartTouchMove, { passive: false });
+    heartSeed.addEventListener("touchend", handleHeartTouchEnd, { passive: true });
   }
   if (plantZone) {
     plantZone.addEventListener("click", function () {
