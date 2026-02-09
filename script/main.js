@@ -290,8 +290,8 @@ const animationTimeline = () => {
 
 // Import the data to customize and insert them into page
 const fetchData = () => {
-  fetch("customize.json")
-    .then((data) => data.json())
+  return fetch("customize.json")
+    .then((res) => res.json())
     .then((data) => {
       Object.keys(data).map((customData) => {
         if (data[customData] !== "") {
@@ -307,12 +307,7 @@ const fetchData = () => {
     });
 };
 
-// Run fetch and animation in sequence
-const resolveFetch = () => {
-  return new Promise((resolve, reject) => {
-    fetchData();
-    resolve("Fetch done!");
-  });
-};
-
-resolveFetch().then(animationTimeline());
+// Run animation only after fetch has finished and DOM is updated
+fetchData().then(() => {
+  animationTimeline();
+});
