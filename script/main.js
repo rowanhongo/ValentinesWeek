@@ -57,6 +57,19 @@ const animationTimeline = () => {
       },
       "-=1"
     )
+    .from(".or-should-i-say", 0.7, {
+      opacity: 0,
+      y: 10,
+    })
+    .to(
+      ".or-should-i-say",
+      0.7,
+      {
+        opacity: 0,
+        y: 10,
+      },
+      "+=2"
+    )
     .from(".three", 0.7, {
       opacity: 0,
       y: 10,

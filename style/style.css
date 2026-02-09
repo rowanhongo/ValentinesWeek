@@ -53,6 +53,15 @@ body {
   font-weight: lighter;
 }
 
+.or-should-i-say {
+  font-size: 1.2rem;
+  font-weight: lighter;
+}
+
+.or-should-i-say p {
+  margin: 0;
+}
+
 .three {
   font-size: 3rem;
 }
