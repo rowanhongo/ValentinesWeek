@@ -340,11 +340,17 @@ const plantZone = document.getElementById("plantZone");
 
 let heartSelected = false;
 
+const bgMusic = document.getElementById("bgMusic");
+
 const handlePlayClick = () => {
   if (!startScreen || !gameView) return;
   startScreen.classList.add("hidden");
   gameView.classList.add("visible");
   fetchData();
+  if (bgMusic) {
+    bgMusic.volume = 0.35;
+    bgMusic.play().catch(() => {});
+  }
 };
 
 const handleHeartClick = () => {
@@ -373,12 +379,56 @@ const handlePlantZoneKeyDown = (e) => {
   }
 };
 
+const doPlant = () => {
+  if (!gameView) return;
+  gameView.classList.remove("visible");
+  startWhenReady();
+};
+
+const handleDragStart = (e) => {
+  e.dataTransfer.setData("text/plain", "heart");
+  e.dataTransfer.effectAllowed = "copy";
+  heartSelected = true;
+  if (heartSeed) {
+    heartSeed.classList.add("selected", "dragging");
+  }
+  if (plantZone) plantZone.classList.add("ready");
+};
+
+const handleDragEnd = () => {
+  if (heartSeed) heartSeed.classList.remove("dragging");
+  if (plantZone) plantZone.classList.remove("drag-over");
+};
+
+const handleDragOver = (e) => {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = "copy";
+  if (plantZone) plantZone.classList.add("drag-over");
+};
+
+const handleDragLeave = (e) => {
+  if (plantZone && !plantZone.contains(e.relatedTarget)) plantZone.classList.remove("drag-over");
+};
+
+const handleDrop = (e) => {
+  e.preventDefault();
+  if (plantZone) plantZone.classList.remove("drag-over");
+  if (e.dataTransfer.getData("text/plain") === "heart") doPlant();
+};
+
 if (playBtn) playBtn.addEventListener("click", handlePlayClick);
 if (heartSeed) {
   heartSeed.addEventListener("click", handleHeartClick);
   heartSeed.addEventListener("keydown", handleHeartKeyDown);
+  heartSeed.addEventListener("dragstart", handleDragStart);
+  heartSeed.addEventListener("dragend", handleDragEnd);
 }
 if (plantZone) {
-  plantZone.addEventListener("click", handlePlantZoneClick);
+  plantZone.addEventListener("click", () => {
+    if (heartSelected) doPlant();
+  });
   plantZone.addEventListener("keydown", handlePlantZoneKeyDown);
+  plantZone.addEventListener("dragover", handleDragOver);
+  plantZone.addEventListener("dragleave", handleDragLeave);
+  plantZone.addEventListener("drop", handleDrop);
 }

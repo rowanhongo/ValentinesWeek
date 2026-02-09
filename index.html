@@ -17,6 +17,9 @@
   </head>
 
   <body>
+    <audio id="bgMusic" preload="auto" loop aria-label="Background music">
+      <source src="Plants vs. Zombies (Main Theme) - Frodo Baggins.mp3" type="audio/mpeg" />
+    </audio>
     <script>
       document.addEventListener("contextmenu", function (e) { e.preventDefault(); });
       document.addEventListener("keydown", function (e) {
@@ -30,21 +33,65 @@
     <div class="game-view" id="gameView">
       <aside class="side-menu">
         <h2 class="side-menu-title">Plant the heart</h2>
-        <div class="heart-seed" id="heartSeed" tabindex="0" role="button" aria-label="Pick heart to plant">
-          <img src="img/heart.svg" alt="" />
+        <div class="heart-seed" id="heartSeed" tabindex="0" role="button" draggable="true" aria-label="Drag or tap heart to plant">
+          <img src="img/heart.svg" alt="" draggable="false" />
         </div>
-        <p class="side-menu-hint" id="plantHint">Click the heart, then click the field to plant</p>
+        <p class="side-menu-hint" id="plantHint">Drag the heart to the field, or tap heart then tap field</p>
       </aside>
       <main class="field">
-        <div class="plant-zone" id="plantZone" tabindex="0" role="button" aria-label="Click here to plant the heart">
+        <div class="plant-zone" id="plantZone" tabindex="0" role="button" aria-label="Drop or click here to plant the heart">
           <span class="plant-zone-label">Plant here</span>
         </div>
       </main>
       <div class="zombies" aria-hidden="true">
-        <div class="zombie zombie-1"></div>
-        <div class="zombie zombie-2"></div>
-        <div class="zombie zombie-3"></div>
-        <div class="zombie zombie-4"></div>
+        <div class="zombie zombie-1">
+          <div class="zombie-head">
+            <span class="zombie-eye"></span>
+            <span class="zombie-eye"></span>
+            <span class="zombie-mouth"></span>
+          </div>
+          <div class="zombie-tie"></div>
+          <div class="zombie-jacket"></div>
+          <div class="zombie-arms"></div>
+          <div class="zombie-pants"></div>
+          <div class="zombie-shoes"></div>
+        </div>
+        <div class="zombie zombie-2">
+          <div class="zombie-head">
+            <span class="zombie-eye"></span>
+            <span class="zombie-eye"></span>
+            <span class="zombie-mouth"></span>
+          </div>
+          <div class="zombie-tie"></div>
+          <div class="zombie-jacket"></div>
+          <div class="zombie-arms"></div>
+          <div class="zombie-pants"></div>
+          <div class="zombie-shoes"></div>
+        </div>
+        <div class="zombie zombie-3">
+          <div class="zombie-head">
+            <span class="zombie-eye"></span>
+            <span class="zombie-eye"></span>
+            <span class="zombie-mouth"></span>
+          </div>
+          <div class="zombie-tie"></div>
+          <div class="zombie-jacket"></div>
+          <div class="zombie-arms"></div>
+          <div class="zombie-pants"></div>
+          <div class="zombie-shoes"></div>
+        </div>
+        <div class="zombie zombie-4">
+          <div class="zombie-head">
+            <span class="zombie-eye"></span>
+            <span class="zombie-eye"></span>
+            <span class="zombie-mouth"></span>
+          </div>
+          <div class="zombie-tie"></div>
+          <div class="zombie-jacket"></div>
+          <div class="zombie-arms"></div>
+          <div class="zombie-pants"></div>
+          <div class="zombie-shoes"></div>
+        </div>
       </div>
     </div>
     <div class="container" id="mainContainer">

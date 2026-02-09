@@ -156,6 +156,10 @@ body::after {
   outline-offset: 2px;
 }
 
+.heart-seed.dragging {
+  opacity: 0.7;
+}
+
 .heart-seed img {
   width: 40px;
   height: 40px;
@@ -195,6 +199,12 @@ body::after {
   border-color: #1b5e20;
 }
 
+.plant-zone.drag-over {
+  background: rgba(46, 125, 50, 0.5);
+  border-style: solid;
+  border-color: #1b5e20;
+}
+
 .plant-zone-label {
   font-size: 0.5rem;
   color: #1b5e20;
@@ -212,39 +222,152 @@ body::after {
   gap: 0.5rem;
 }
 
+/* PvZ-style zombie: mint skin, brown jacket, red/white tie, blue pants */
 .zombie {
-  width: 50px;
-  height: 70px;
-  background: #546e7a;
-  border: 3px solid #37474f;
-  border-radius: 4px;
+  width: 44px;
+  height: 80px;
   position: relative;
   animation: zombie-sway 2.5s ease-in-out infinite;
 }
 
-.zombie::before {
-  content: "";
+.zombie-head {
   position: absolute;
-  top: -8px;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 36px;
-  height: 36px;
-  background: #78909c;
-  border: 2px solid #546e7a;
+  width: 32px;
+  height: 28px;
+  background: #8fbc8f;
+  border: 2px solid #6b8e6b;
+  border-radius: 50% 50% 45% 45%;
+  box-shadow: inset -2px -2px 0 rgba(0,0,0,0.15);
+}
+
+.zombie-eye {
+  position: absolute;
+  top: 8px;
+  width: 8px;
+  height: 10px;
+  background: #fff;
+  border: 1px solid #ccc;
   border-radius: 50%;
 }
 
-.zombie::after {
+.zombie-eye::after {
   content: "";
   position: absolute;
-  top: 18px;
+  top: 3px;
+  left: 2px;
+  width: 3px;
+  height: 4px;
+  background: #1a1a1a;
+  border-radius: 50%;
+}
+
+.zombie-eye:nth-child(1) {
+  left: 4px;
+}
+
+.zombie-eye:nth-child(2) {
+  right: 4px;
+  left: auto;
+}
+
+.zombie-mouth {
+  position: absolute;
+  bottom: 4px;
   left: 50%;
   transform: translateX(-50%);
-  width: 20px;
+  width: 12px;
+  height: 6px;
+  background: #4a3728;
+  border: 1px solid #2a1810;
+  border-radius: 0 0 50% 50%;
+}
+
+.zombie-tie {
+  position: absolute;
+  top: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 14px;
+  background: repeating-linear-gradient(
+    180deg,
+    #c62828 0,
+    #c62828 3px,
+    #fff 3px,
+    #fff 6px
+  );
+  border: 1px solid #8b0000;
+}
+
+.zombie-jacket {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 28px;
+  background: #5d4037;
+  border: 2px solid #3e2723;
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 95% 100%, 5% 100%, 0 85%);
+  box-shadow: inset 0 0 0 2px #6d4c41;
+}
+
+.zombie-arms {
+  position: absolute;
+  top: 28px;
+  left: -4px;
+  width: 52px;
   height: 12px;
-  background: #37474f;
+}
+
+.zombie-arms::before,
+.zombie-arms::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 14px;
+  background: #8fbc8f;
+  border: 1px solid #6b8e6b;
   border-radius: 2px;
+}
+
+.zombie-arms::before {
+  left: 0;
+  top: 0;
+  transform: rotate(-15deg);
+}
+
+.zombie-arms::after {
+  right: 0;
+  top: 0;
+  transform: rotate(15deg);
+}
+
+.zombie-pants {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 22px;
+  background: #1565c0;
+  border: 2px solid #0d47a1;
+  clip-path: polygon(0 0, 100% 0, 98% 100%, 2% 100%);
+}
+
+.zombie-shoes {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 12px;
+  background: #4e342e;
+  border: 2px solid #3e2723;
+  border-radius: 0 0 4px 4px;
 }
 
 .zombie-1 { animation-delay: 0s; }
@@ -654,13 +777,56 @@ body::after {
   }
 
   .zombie {
-    width: 36px;
-    height: 50px;
+    width: 34px;
+    height: 62px;
   }
 
-  .zombie::before {
+  .zombie-head {
+    width: 26px;
+    height: 22px;
+  }
+
+  .zombie-eye {
+    width: 6px;
+    height: 8px;
+    top: 6px;
+  }
+
+  .zombie-eye::after {
+    width: 2px;
+    height: 3px;
+  }
+
+  .zombie-eye:nth-child(1) { left: 2px; }
+  .zombie-eye:nth-child(2) { right: 2px; }
+
+  .zombie-mouth {
+    width: 10px;
+    height: 5px;
+    bottom: 2px;
+  }
+
+  .zombie-tie {
+    width: 4px;
+    height: 10px;
+    top: 22px;
+  }
+
+  .zombie-jacket {
     width: 28px;
-    height: 28px;
+    height: 22px;
+    top: 20px;
+  }
+
+  .zombie-pants {
+    width: 26px;
+    height: 16px;
+    bottom: 14px;
+  }
+
+  .zombie-shoes {
+    width: 22px;
+    height: 10px;
   }
 }
 
