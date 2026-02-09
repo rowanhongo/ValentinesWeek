@@ -103,7 +103,7 @@ const animationTimeline = () => {
       0.05
     )
     .to(".fake-btn", 0.1, {
-      backgroundColor: "rgb(127, 206, 248)",
+      backgroundColor: "#66bb6a",
     })
     .to(
       ".four",
@@ -123,7 +123,7 @@ const animationTimeline = () => {
     .to(".idea-3 strong", 0.5, {
       scale: 1.2,
       x: 10,
-      backgroundColor: "rgb(21, 161, 237)",
+      backgroundColor: "#2e7d32",
       color: "#fff",
     })
     .to(".idea-3", 0.7, ideaTextTransLeave, "+=1.5")
