@@ -10,16 +10,58 @@ body {
 .container {
   height: 100vh;
   width: 100vh;
+  max-width: 100%;
   margin: 0 auto;
   text-align: center;
   visibility: hidden;
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .container div.six {
   top: 10vh;
   z-index: 1;
+}
+
+/* PC / desktop: move section up and size so wish text isn't cut off */
+@media screen and (min-height: 700px) and (min-width: 768px) {
+  .container div.six {
+    top: 2vh;
+  }
+
+  .six img {
+    max-width: 38%;
+  }
+
+  .wish {
+    padding-bottom: 2rem;
+    margin-top: 0.5rem;
+  }
+
+  .wish h5 {
+    line-height: 1.5;
+    padding-bottom: 1rem;
+  }
+}
+
+/* Shorter desktop (e.g. 720p): smaller image so all text fits */
+@media screen and (min-width: 768px) and (max-height: 800px) {
+  .container div.six {
+    top: 0;
+  }
+
+  .six img {
+    max-width: 32%;
+  }
+
+  .wish-hbd {
+    font-size: 2.4em;
+  }
+
+  .wish h5 {
+    font-size: 1.6rem;
+  }
 }
 
 .container div.seven,
