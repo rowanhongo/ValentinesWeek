@@ -331,4 +331,54 @@ const startWhenReady = () => {
   }
 };
 
-fetchData().then(startWhenReady);
+// Game flow: start screen -> play -> game view (plant the heart) -> plant -> animation
+const startScreen = document.getElementById("startScreen");
+const playBtn = document.getElementById("playBtn");
+const gameView = document.getElementById("gameView");
+const heartSeed = document.getElementById("heartSeed");
+const plantZone = document.getElementById("plantZone");
+
+let heartSelected = false;
+
+const handlePlayClick = () => {
+  if (!startScreen || !gameView) return;
+  startScreen.classList.add("hidden");
+  gameView.classList.add("visible");
+  fetchData();
+};
+
+const handleHeartClick = () => {
+  heartSelected = true;
+  if (heartSeed) heartSeed.classList.add("selected");
+  if (plantZone) plantZone.classList.add("ready");
+};
+
+const handleHeartKeyDown = (e) => {
+  if (e.key === "Enter" || e.key === " ") {
+    e.preventDefault();
+    handleHeartClick();
+  }
+};
+
+const handlePlantZoneClick = () => {
+  if (!heartSelected || !gameView) return;
+  gameView.classList.remove("visible");
+  startWhenReady();
+};
+
+const handlePlantZoneKeyDown = (e) => {
+  if (e.key === "Enter" || e.key === " ") {
+    e.preventDefault();
+    handlePlantZoneClick();
+  }
+};
+
+if (playBtn) playBtn.addEventListener("click", handlePlayClick);
+if (heartSeed) {
+  heartSeed.addEventListener("click", handleHeartClick);
+  heartSeed.addEventListener("keydown", handleHeartKeyDown);
+}
+if (plantZone) {
+  plantZone.addEventListener("click", handlePlantZoneClick);
+  plantZone.addEventListener("keydown", handlePlantZoneKeyDown);
+}
