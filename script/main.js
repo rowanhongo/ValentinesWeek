@@ -1,3 +1,26 @@
+let isMuted = false;
+
+const crossfadeToLana = () => {
+  const pvz = document.getElementById("bgMusic");
+  const lana = document.getElementById("lanaMusic");
+  if (!pvz || !lana) return;
+  lana.volume = 0;
+  lana.currentTime = 0;
+  lana.play().catch(() => {});
+  const vol = { pvz: pvz.volume, lana: 0 };
+  TweenMax.to(vol, 1.2, {
+    pvz: 0,
+    lana: isMuted ? 0 : 0.35,
+    onUpdate: function () {
+      pvz.volume = vol.pvz;
+      lana.volume = isMuted ? 0 : vol.lana;
+    },
+    onComplete: function () {
+      pvz.pause();
+    },
+  });
+};
+
 // Animation Timeline
 const animationTimeline = () => {
   // Spit chars that needs to be animated individually
@@ -120,6 +143,7 @@ const animationTimeline = () => {
     .from(".idea-2", 0.7, ideaTextTrans)
     .to(".idea-2", 0.7, ideaTextTransLeave, "+=1.5")
     .from(".idea-3", 0.7, ideaTextTrans)
+    .add(crossfadeToLana, "-=0.5")
     .to(".idea-3 strong", 0.5, {
       scale: 1.2,
       x: 10,
@@ -298,6 +322,17 @@ const animationTimeline = () => {
   // Restart Animation on click
   const replyBtn = document.getElementById("replay");
   replyBtn.addEventListener("click", () => {
+    const pvz = document.getElementById("bgMusic");
+    const lana = document.getElementById("lanaMusic");
+    if (lana) {
+      lana.pause();
+      lana.currentTime = 0;
+    }
+    if (pvz) {
+      pvz.currentTime = 0;
+      pvz.volume = isMuted ? 0 : 0.35;
+      pvz.play().catch(() => {});
+    }
     tl.restart();
   });
 };
@@ -346,6 +381,7 @@ const handlePlayClick = () => {
   if (!startScreen || !gameView) return;
   startScreen.classList.add("hidden");
   gameView.classList.add("visible");
+  document.body.classList.add("speaker-visible");
   fetchData();
   if (bgMusic) {
     bgMusic.volume = 0.35;
@@ -416,7 +452,25 @@ const handleDrop = (e) => {
   if (e.dataTransfer.getData("text/plain") === "heart") doPlant();
 };
 
+const speakerBtn = document.getElementById("speakerBtn");
+const lanaMusic = document.getElementById("lanaMusic");
+
+const handleSpeakerClick = () => {
+  isMuted = !isMuted;
+  if (bgMusic) bgMusic.muted = isMuted;
+  if (lanaMusic) lanaMusic.muted = isMuted;
+  const iconSpeaker = speakerBtn?.querySelector(".icon-speaker");
+  const iconMuted = speakerBtn?.querySelector(".icon-muted");
+  if (iconSpeaker) iconSpeaker.classList.toggle("hidden", isMuted);
+  if (iconMuted) iconMuted.classList.toggle("hidden", !isMuted);
+  if (speakerBtn) {
+    speakerBtn.setAttribute("aria-label", isMuted ? "Unmute music" : "Mute music");
+    speakerBtn.setAttribute("title", isMuted ? "Unmute music" : "Mute music");
+  }
+};
+
 if (playBtn) playBtn.addEventListener("click", handlePlayClick);
+if (speakerBtn) speakerBtn.addEventListener("click", handleSpeakerClick);
 if (heartSeed) {
   heartSeed.addEventListener("click", handleHeartClick);
   heartSeed.addEventListener("keydown", handleHeartKeyDown);
