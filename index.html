@@ -40,6 +40,18 @@
       document.addEventListener("keydown", function (e) {
         if (e.key === "F12" || (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key)) || (e.ctrlKey && e.key === "u")) e.preventDefault();
       });
+      document.addEventListener("DOMContentLoaded", function () {
+        var playBtn = document.getElementById("playBtn");
+        var startScreen = document.getElementById("startScreen");
+        var gameView = document.getElementById("gameView");
+        if (playBtn && startScreen && gameView) {
+          playBtn.addEventListener("click", function () {
+            startScreen.classList.add("hidden");
+            gameView.classList.add("visible");
+            document.body.classList.add("speaker-visible");
+          });
+        }
+      });
     </script>
     <div class="start-screen" id="startScreen">
       <p class="start-screen-title">Press play to start</p>

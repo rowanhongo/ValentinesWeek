@@ -367,17 +367,12 @@ const startWhenReady = () => {
 };
 
 // Game flow: start screen -> play -> game view (plant the heart) -> plant -> animation
-const startScreen = document.getElementById("startScreen");
-const playBtn = document.getElementById("playBtn");
-const gameView = document.getElementById("gameView");
-const heartSeed = document.getElementById("heartSeed");
-const plantZone = document.getElementById("plantZone");
-
 let heartSelected = false;
 
-const bgMusic = document.getElementById("bgMusic");
-
 const handlePlayClick = () => {
+  const startScreen = document.getElementById("startScreen");
+  const gameView = document.getElementById("gameView");
+  const bgMusic = document.getElementById("bgMusic");
   if (!startScreen || !gameView) return;
   startScreen.classList.add("hidden");
   gameView.classList.add("visible");
@@ -385,12 +380,14 @@ const handlePlayClick = () => {
   fetchData();
   if (bgMusic) {
     bgMusic.volume = 0.35;
-    bgMusic.play().catch(() => {});
+    bgMusic.play().catch(function () {});
   }
 };
 
 const handleHeartClick = () => {
   heartSelected = true;
+  const heartSeed = document.getElementById("heartSeed");
+  const plantZone = document.getElementById("plantZone");
   if (heartSeed) heartSeed.classList.add("selected");
   if (plantZone) plantZone.classList.add("ready");
 };
@@ -403,6 +400,7 @@ const handleHeartKeyDown = (e) => {
 };
 
 const handlePlantZoneClick = () => {
+  const gameView = document.getElementById("gameView");
   if (!heartSelected || !gameView) return;
   gameView.classList.remove("visible");
   startWhenReady();
@@ -416,6 +414,7 @@ const handlePlantZoneKeyDown = (e) => {
 };
 
 const doPlant = () => {
+  const gameView = document.getElementById("gameView");
   if (!gameView) return;
   gameView.classList.remove("visible");
   startWhenReady();
@@ -425,13 +424,15 @@ const handleDragStart = (e) => {
   e.dataTransfer.setData("text/plain", "heart");
   e.dataTransfer.effectAllowed = "copy";
   heartSelected = true;
-  if (heartSeed) {
-    heartSeed.classList.add("selected", "dragging");
-  }
+  const heartSeed = document.getElementById("heartSeed");
+  const plantZone = document.getElementById("plantZone");
+  if (heartSeed) heartSeed.classList.add("selected", "dragging");
   if (plantZone) plantZone.classList.add("ready");
 };
 
 const handleDragEnd = () => {
+  const heartSeed = document.getElementById("heartSeed");
+  const plantZone = document.getElementById("plantZone");
   if (heartSeed) heartSeed.classList.remove("dragging");
   if (plantZone) plantZone.classList.remove("drag-over");
 };
@@ -439,28 +440,31 @@ const handleDragEnd = () => {
 const handleDragOver = (e) => {
   e.preventDefault();
   e.dataTransfer.dropEffect = "copy";
+  const plantZone = document.getElementById("plantZone");
   if (plantZone) plantZone.classList.add("drag-over");
 };
 
 const handleDragLeave = (e) => {
+  const plantZone = document.getElementById("plantZone");
   if (plantZone && !plantZone.contains(e.relatedTarget)) plantZone.classList.remove("drag-over");
 };
 
 const handleDrop = (e) => {
   e.preventDefault();
+  const plantZone = document.getElementById("plantZone");
   if (plantZone) plantZone.classList.remove("drag-over");
   if (e.dataTransfer.getData("text/plain") === "heart") doPlant();
 };
 
-const speakerBtn = document.getElementById("speakerBtn");
-const lanaMusic = document.getElementById("lanaMusic");
-
 const handleSpeakerClick = () => {
+  const bgMusic = document.getElementById("bgMusic");
+  const lanaMusic = document.getElementById("lanaMusic");
+  const speakerBtn = document.getElementById("speakerBtn");
   isMuted = !isMuted;
   if (bgMusic) bgMusic.muted = isMuted;
   if (lanaMusic) lanaMusic.muted = isMuted;
-  const iconSpeaker = speakerBtn?.querySelector(".icon-speaker");
-  const iconMuted = speakerBtn?.querySelector(".icon-muted");
+  var iconSpeaker = speakerBtn && speakerBtn.querySelector(".icon-speaker");
+  var iconMuted = speakerBtn && speakerBtn.querySelector(".icon-muted");
   if (iconSpeaker) iconSpeaker.classList.toggle("hidden", isMuted);
   if (iconMuted) iconMuted.classList.toggle("hidden", !isMuted);
   if (speakerBtn) {
@@ -469,20 +473,32 @@ const handleSpeakerClick = () => {
   }
 };
 
-if (playBtn) playBtn.addEventListener("click", handlePlayClick);
-if (speakerBtn) speakerBtn.addEventListener("click", handleSpeakerClick);
-if (heartSeed) {
-  heartSeed.addEventListener("click", handleHeartClick);
-  heartSeed.addEventListener("keydown", handleHeartKeyDown);
-  heartSeed.addEventListener("dragstart", handleDragStart);
-  heartSeed.addEventListener("dragend", handleDragEnd);
+function initGameFlow() {
+  var playBtn = document.getElementById("playBtn");
+  var speakerBtn = document.getElementById("speakerBtn");
+  var heartSeed = document.getElementById("heartSeed");
+  var plantZone = document.getElementById("plantZone");
+  if (playBtn) playBtn.addEventListener("click", handlePlayClick);
+  if (speakerBtn) speakerBtn.addEventListener("click", handleSpeakerClick);
+  if (heartSeed) {
+    heartSeed.addEventListener("click", handleHeartClick);
+    heartSeed.addEventListener("keydown", handleHeartKeyDown);
+    heartSeed.addEventListener("dragstart", handleDragStart);
+    heartSeed.addEventListener("dragend", handleDragEnd);
+  }
+  if (plantZone) {
+    plantZone.addEventListener("click", function () {
+      if (heartSelected) doPlant();
+    });
+    plantZone.addEventListener("keydown", handlePlantZoneKeyDown);
+    plantZone.addEventListener("dragover", handleDragOver);
+    plantZone.addEventListener("dragleave", handleDragLeave);
+    plantZone.addEventListener("drop", handleDrop);
+  }
 }
-if (plantZone) {
-  plantZone.addEventListener("click", () => {
-    if (heartSelected) doPlant();
-  });
-  plantZone.addEventListener("keydown", handlePlantZoneKeyDown);
-  plantZone.addEventListener("dragover", handleDragOver);
-  plantZone.addEventListener("dragleave", handleDragLeave);
-  plantZone.addEventListener("drop", handleDrop);
+
+if (typeof document !== "undefined" && document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initGameFlow);
+} else {
+  initGameFlow();
 }
