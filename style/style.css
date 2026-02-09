@@ -44,11 +44,15 @@ body::after {
   pointer-events: none;
 }
 
-/* Pixelated/crisp images to match sprite style (decorative only; keep photo clear) */
+/* Pixelated/crisp images to match sprite style (decorative only; keep photos clear) */
 .container img:not(.girl-dp) {
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
+}
+
+.six .carousel-slide img {
+  image-rendering: auto;
 }
 
 /* Speaker / mute button - top right, visible after play */
@@ -468,7 +472,8 @@ body.speaker-visible .speaker-btn {
     top: 2vh;
   }
 
-  .six img {
+  .six img,
+  .six .carousel {
     max-width: 38%;
   }
 
@@ -489,7 +494,8 @@ body.speaker-visible .speaker-btn {
     top: 0;
   }
 
-  .six img {
+  .six img,
+  .six .carousel {
     max-width: 32%;
   }
 
@@ -662,10 +668,48 @@ body.speaker-visible .speaker-btn {
   position: relative;
 }
 
-.six img {
+.six img,
+.six .carousel {
   display: inline-block;
   max-width: 45%;
   height: auto;
+}
+
+.six .carousel {
+  position: relative;
+  width: 100%;
+  max-width: 45%;
+  overflow: hidden;
+}
+
+.six .carousel-track {
+  position: relative;
+  width: 100%;
+  padding-bottom: 120%;
+}
+
+.six .carousel-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  pointer-events: none;
+}
+
+.six .carousel-slide.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+.six .carousel-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  max-width: 100%;
 }
 
 .six .hat {

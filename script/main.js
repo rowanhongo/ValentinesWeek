@@ -319,6 +319,36 @@ const animationTimeline = () => {
   // tl.seek("currentStep");
   // tl.timeScale(2);
 
+  // Carousel: smooth crossfade between images
+  var carouselInterval = null;
+  function startCarousel() {
+    if (carouselInterval) clearInterval(carouselInterval);
+    var track = document.querySelector("#imagePath .carousel-track");
+    if (!track) return;
+    var slides = track.querySelectorAll(".carousel-slide");
+    if (slides.length <= 1) return;
+    var index = 0;
+    carouselInterval = setInterval(function () {
+      slides[index].classList.remove("active");
+      index = (index + 1) % slides.length;
+      slides[index].classList.add("active");
+    }, 4000);
+  }
+  function resetCarousel() {
+    if (carouselInterval) {
+      clearInterval(carouselInterval);
+      carouselInterval = null;
+    }
+    var track = document.querySelector("#imagePath .carousel-track");
+    if (track) {
+      var slides = track.querySelectorAll(".carousel-slide");
+      slides.forEach(function (s, i) {
+        s.classList.toggle("active", i === 0);
+      });
+    }
+  }
+  startCarousel();
+
   // Restart Animation on click
   const replyBtn = document.getElementById("replay");
   replyBtn.addEventListener("click", () => {
@@ -333,7 +363,9 @@ const animationTimeline = () => {
       pvz.volume = isMuted ? 0 : 0.35;
       pvz.play().catch(() => {});
     }
+    resetCarousel();
     tl.restart();
+    startCarousel();
   });
 };
 
@@ -345,9 +377,8 @@ const fetchData = () => {
       Object.keys(data).map((customData) => {
         if (data[customData] !== "") {
           if (customData === "imagePath") {
-            document
-              .getElementById(customData)
-              .setAttribute("src", data[customData]);
+            var el = document.getElementById(customData);
+            if (el && el.tagName === "IMG") el.setAttribute("src", data[customData]);
           } else {
             document.getElementById(customData).innerText = data[customData];
           }
@@ -356,13 +387,18 @@ const fetchData = () => {
     });
 };
 
-// Run animation only after fetch has finished, DOM is updated, and image has loaded
+// Run animation only after fetch has finished, DOM is updated, and first carousel image has loaded
 const startWhenReady = () => {
-  const imgEl = document.getElementById("imagePath");
-  if (imgEl.complete && imgEl.naturalWidth > 0) {
+  const carousel = document.getElementById("imagePath");
+  const firstImg = carousel && carousel.querySelector(".carousel-slide img");
+  if (!firstImg) {
+    animationTimeline();
+    return;
+  }
+  if (firstImg.complete && firstImg.naturalWidth > 0) {
     animationTimeline();
   } else {
-    imgEl.onload = () => animationTimeline();
+    firstImg.onload = () => animationTimeline();
   }
 };
 
