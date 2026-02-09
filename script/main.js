@@ -142,6 +142,13 @@ const animationTimeline = () => {
       },
       "+=0.5"
     )
+    .fromTo(
+      ".sea-of-love-hearts",
+      0.7,
+      { opacity: 0, y: 15 },
+      { opacity: 0.9, y: 0 },
+      "-=0.7"
+    )
     .to(
       ".idea-5 span",
       0.7,
@@ -159,6 +166,12 @@ const animationTimeline = () => {
         opacity: 0,
       },
       "+=2"
+    )
+    .to(
+      ".sea-of-love-hearts",
+      0.7,
+      { opacity: 0, scale: 0.5 },
+      "-=0.7"
     )
     .staggerFrom(
       ".idea-6 span",

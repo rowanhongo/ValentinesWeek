@@ -184,6 +184,51 @@ body {
   font-size: 4rem;
 }
 
+.sea-of-love-hearts {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 14rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem 2rem;
+  flex-wrap: wrap;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.sea-heart {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  animation: sea-float 4s ease-in-out infinite;
+}
+
+.sea-heart-1 { animation-delay: 0s; animation-duration: 5s; width: 24px; height: 24px; }
+.sea-heart-2 { animation-delay: 0.7s; animation-duration: 4.5s; width: 32px; height: 32px; }
+.sea-heart-3 { animation-delay: 1.4s; animation-duration: 5.5s; width: 22px; height: 22px; }
+.sea-heart-4 { animation-delay: 2.1s; animation-duration: 4.2s; width: 30px; height: 30px; }
+.sea-heart-5 { animation-delay: 0.3s; animation-duration: 5.2s; width: 26px; height: 26px; }
+.sea-heart-6 { animation-delay: 1.8s; animation-duration: 4.8s; width: 28px; height: 28px; }
+.sea-heart-7 { animation-delay: 2.5s; animation-duration: 5.8s; width: 20px; height: 20px; }
+
+@keyframes sea-float {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(12px, -4px) rotate(3deg);
+  }
+  50% {
+    transform: translate(-8px, 3px) rotate(-2deg);
+  }
+  75% {
+    transform: translate(6px, 2px) rotate(2deg);
+  }
+}
+
 .idea-5 span,
 .idea-6 span,
 .wish-hbd span,
@@ -397,6 +442,25 @@ body {
   .five .idea-5 {
     font-size: 2.5rem;
   }
+
+  .sea-of-love-hearts {
+    top: 11rem;
+    height: 3rem;
+    gap: 0.5rem 1rem;
+  }
+
+  .sea-heart {
+    width: 18px;
+    height: 18px;
+  }
+
+  .sea-heart-1 { width: 16px; height: 16px; }
+  .sea-heart-2 { width: 22px; height: 22px; }
+  .sea-heart-3 { width: 14px; height: 14px; }
+  .sea-heart-4 { width: 20px; height: 20px; }
+  .sea-heart-5 { width: 18px; height: 18px; }
+  .sea-heart-6 { width: 18px; height: 18px; }
+  .sea-heart-7 { width: 14px; height: 14px; }
 
   .idea-5 span {
     display: block;
