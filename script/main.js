@@ -307,7 +307,14 @@ const fetchData = () => {
     });
 };
 
-// Run animation only after fetch has finished and DOM is updated
-fetchData().then(() => {
-  animationTimeline();
-});
+// Run animation only after fetch has finished, DOM is updated, and image has loaded
+const startWhenReady = () => {
+  const imgEl = document.getElementById("imagePath");
+  if (imgEl.complete && imgEl.naturalWidth > 0) {
+    animationTimeline();
+  } else {
+    imgEl.onload = () => animationTimeline();
+  }
+};
+
+fetchData().then(startWhenReady);
