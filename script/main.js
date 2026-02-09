@@ -8,9 +8,11 @@ const animationTimeline = () => {
     .split("")
     .join("</span><span>")}</span`;
 
-  hbd.innerHTML = `<span>${hbd.innerHTML
-    .split("")
-    .join("</span><span>")}</span`;
+  const hbdText = hbd.innerHTML.trim();
+  const hbdWords = hbdText.split(/\s+/);
+  hbd.innerHTML = hbdWords
+    .map((word) => `<span class="wish-hbd-word">${word}</span>`)
+    .join(" ");
 
   const ideaTextTrans = {
     opacity: 0,
@@ -213,12 +215,11 @@ const animationTimeline = () => {
       opacity: 0,
     })
     .staggerFrom(
-      ".wish-hbd span",
+      ".wish-hbd .wish-hbd-word",
       0.7,
       {
         opacity: 0,
         y: -50,
-        // scale: 0.3,
         rotation: 150,
         skewX: "30deg",
         ease: Elastic.easeOut.config(1, 0.5),
@@ -226,7 +227,7 @@ const animationTimeline = () => {
       0.1
     )
     .staggerFromTo(
-      ".wish-hbd span",
+      ".wish-hbd .wish-hbd-word",
       0.7,
       {
         scale: 1.4,
