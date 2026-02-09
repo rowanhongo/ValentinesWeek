@@ -292,6 +292,41 @@ body {
   margin: 10px 0 0;
 }
 
+.nine {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+}
+
+.nine-text {
+  position: relative;
+  z-index: 1;
+  max-width: 90%;
+}
+
+.nine-deco {
+  position: absolute;
+  width: clamp(80px, 18vw, 180px);
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.nine-deco-left {
+  left: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.nine-deco-right {
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%) scaleX(-1);
+}
+
 .nine p {
   font-size: 2rem;
   font-weight: lighter;
@@ -369,5 +404,17 @@ body {
   .nine p {
     font-size: 1.5rem;
     font-weight: lighter;
+  }
+
+  .nine-deco {
+    width: 60px;
+  }
+
+  .nine-deco-left {
+    left: 2%;
+  }
+
+  .nine-deco-right {
+    right: 2%;
   }
 }
