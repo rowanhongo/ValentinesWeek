@@ -5,6 +5,35 @@ html {
 body {
   margin: 0;
   font-family: "Work Sans", sans-serif;
+  position: relative;
+}
+
+.corner-decorations {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.corner-deco {
+  position: absolute;
+  width: clamp(60px, 12vw, 140px);
+  height: auto;
+  object-fit: contain;
+}
+
+.corner-deco-tl {
+  top: 8px;
+  left: 8px;
+}
+
+.corner-deco-tr {
+  top: 8px;
+  right: 8px;
+  transform: scaleX(-1);
 }
 
 .container {
@@ -17,6 +46,7 @@ body {
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
+  z-index: 1;
 }
 
 .container div.six {
@@ -102,6 +132,7 @@ body {
 
 .or-should-i-say p {
   margin: 0;
+  color: #333;
 }
 
 .three {
@@ -302,29 +333,7 @@ body {
 
 .nine-text {
   position: relative;
-  z-index: 1;
   max-width: 90%;
-}
-
-.nine-deco {
-  position: absolute;
-  width: clamp(80px, 18vw, 180px);
-  height: auto;
-  object-fit: contain;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.nine-deco-left {
-  left: 5%;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.nine-deco-right {
-  right: 5%;
-  top: 50%;
-  transform: translateY(-50%) scaleX(-1);
 }
 
 .nine p {
@@ -376,6 +385,19 @@ body {
     bottom: -38px;
   }
 
+  .five p {
+    font-size: 1.35rem;
+    padding: 0 0.5rem;
+  }
+
+  .idea-3 strong {
+    padding: 2px 4px;
+  }
+
+  .five .idea-5 {
+    font-size: 2.5rem;
+  }
+
   .idea-5 span {
     display: block;
   }
@@ -406,15 +428,26 @@ body {
     font-weight: lighter;
   }
 
-  .nine-deco {
-    width: 60px;
+  .or-should-i-say {
+    font-size: 1rem;
+    padding: 0 0.5rem;
   }
 
-  .nine-deco-left {
-    left: 2%;
+  .or-should-i-say p {
+    color: #333;
   }
 
-  .nine-deco-right {
-    right: 2%;
+  .corner-deco {
+    width: clamp(50px, 20vw, 80px);
+  }
+
+  .corner-deco-tl {
+    top: 6px;
+    left: 6px;
+  }
+
+  .corner-deco-tr {
+    top: 6px;
+    right: 6px;
   }
 }
